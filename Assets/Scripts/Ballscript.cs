@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 
 public class Ballscript : MonoBehaviour
@@ -22,6 +23,8 @@ public class Ballscript : MonoBehaviour
     private float spin_by; // in game spin amount
     private bool is_ball_thrown=false;
     private bool first_bounce=false;
+    public int Score;
+    public TextMeshProUGUI ScoreText;
 
     public float ball_speed
     { 
@@ -70,8 +73,9 @@ public class Ballscript : MonoBehaviour
 
     void Update()
     {
+        ScoreText.text = "Score :" + Score.ToString();
         //continously checks to see if ball is in position to be hit, once ready it returns true value
-        if(transform.position.z >= (float)-3.5)
+        if (transform.position.z >= (float)-3.5)
         {
             batscript.instance.is_ball_inpos = true;
         }
@@ -129,6 +133,57 @@ private void OnCollisionEnter(Collision collision)
             Ballscript.instance.Reset();
             stumpscript.instance.Reset();
         }
+
+        if (collision.gameObject.CompareTag("One"))
+        {
+            Debug.Log("Score 11111");
+            Score++;
+            controls.instance.display_Score("1");
+            bat.instance.ResetBat();
+            Ballscript.instance.Reset();
+            stumpscript.instance.Reset();
+        }
+
+        if (collision.gameObject.CompareTag("Two"))
+        {
+            Debug.Log("Score 2222");
+            Score+=2;
+            controls.instance.display_Score("2");
+            bat.instance.ResetBat();
+            Ballscript.instance.Reset();
+            stumpscript.instance.Reset();
+        }
+
+        if (collision.gameObject.CompareTag("Three"))
+        {
+            Debug.Log("Score 333");
+            Score += 3;
+            controls.instance.display_Score("3");
+            bat.instance.ResetBat();
+            Ballscript.instance.Reset();
+            stumpscript.instance.Reset();
+        }
+
+        if (collision.gameObject.CompareTag("Four"))
+        {
+            Debug.Log("Score 4444");
+            Score += 4;
+            controls.instance.display_Score("4");
+            bat.instance.ResetBat();
+            Ballscript.instance.Reset();
+            stumpscript.instance.Reset();
+        }
+
+        if (collision.gameObject.CompareTag("Six"))
+        {
+            Debug.Log("Score 66666");
+            Score += 6;
+            controls.instance.display_Score("6");
+            bat.instance.ResetBat();
+            Ballscript.instance.Reset();
+            stumpscript.instance.Reset();
+        }
+
     }
 
     public void Throw()
@@ -149,12 +204,16 @@ private void OnCollisionEnter(Collision collision)
             Debug.Log("GRACHECK222");
             rb.useGravity = true; // if the ball has not bounced before set it's gravity to true
 		}
- 	}
+        Invoke("UseGravity", 2.5f);
+    }
+    public void UseGravity()
+    {
+        bat.instance.BallRB.GetComponent<Rigidbody>().useGravity = true;
 
+    }
     public void Reset()
     {
         //sets all booleans to false.
-
         transform.position = default_pos; //brings ball back to original spot
         is_ball_thrown = false; 
         first_bounce = false;

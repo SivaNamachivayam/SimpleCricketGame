@@ -108,4 +108,9 @@ public class controls : MonoBehaviour
         goodshotpanel.SetActive(true);
         shot_text.text = "Shot!";
     }
+    public void display_Score(string Score) // displat the shot! 
+    {
+        goodshotpanel.SetActive(true);
+        shot_text.text = Score;
+    }
 }

@@ -8,6 +8,11 @@ TagManager:
   - stump
   - ball
   - OutSide
+  - One
+  - Two
+  - Three
+  - Four
+  - Six
   layers:
   - Default
   - TransparentFX

@@ -38,7 +38,7 @@ public class bat : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.C))  // Use UI button in real scenario
         {
-            if (BallRB.velocity.magnitude < 0.01)
+            if (BallRB.velocity.magnitude < 0.01 && !BallMove)
                 Ballscript.instance.Throw();
         }
         if (isSwinging)
@@ -49,6 +49,7 @@ public class bat : MonoBehaviour
 
     public void ThrowBall()
     {
+        controls.instance.display_Score(" ");
         if (BallRB.velocity.magnitude < 0.01)
             Ballscript.instance.Throw();
     }
@@ -66,7 +67,7 @@ public class bat : MonoBehaviour
     }
     void SwingBat()
     {
-        Invoke("UseGravity", 2.5f);
+        //Invoke("UseGravity", 2.5f);
         BallMove = true;
         // Rotate the bat to swing
         float swingStep = swingSpeed * Time.deltaTime;
@@ -82,11 +83,11 @@ public class bat : MonoBehaviour
         }
     }
 
-    public void UseGravity()
-    {
-        BallRB.GetComponent<Rigidbody>().useGravity = true;
+    //public void UseGravity()
+    //{
+    //    BallRB.GetComponent<Rigidbody>().useGravity = true;
 
-    }
+    //}
 
     public void ResetBat()
     {
