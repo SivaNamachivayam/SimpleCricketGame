@@ -110,6 +110,7 @@ public class GoogleAuthentication : MonoBehaviour
         else
         {
             Debug.LogError("Welcome: " + task.Result.DisplayName + "!");
+            userNameText.text = task.Result.DisplayName;
             imageURL = task.Result.ImageUrl?.ToString();
 
             StartCoroutine(LoadProfilePic(imageURL));
