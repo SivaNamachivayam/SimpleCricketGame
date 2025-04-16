@@ -83,8 +83,37 @@ public class Ballscript : MonoBehaviour
 
 private void OnCollisionEnter(Collision collision) 
     {
+        if (collision.gameObject.CompareTag("pitch"))
+        {
+            float stumpHeight = stumpscript.instance.transform.position.y; // Get the stump height
+            float requiredBounceSpeed = Mathf.Sqrt(2 * Physics.gravity.magnitude * stumpHeight); // Calculate required bounce velocity
 
-        if(collision.gameObject.CompareTag("pitch"))
+            switch (balltype)
+            {
+                case 0:
+                    spin_by = direction.x; //for straight ball
+                    break;
+                case 1:
+                    spin_by = -spin_val / speed; //for offspin in negative x direction.
+                    break;
+                case 2:
+                    spin_by = spin_val / speed; //for leg spin
+                    break;
+            }
+
+            if (!first_bounce)
+            {
+                first_bounce = true;
+                rb.useGravity = true;
+
+                // Set the new bounce direction with correct height
+                direction = new Vector3(spin_by, requiredBounceSpeed, direction.z);
+                direction = Vector3.Normalize(direction); // Normalize direction
+                rb.AddForce(direction * speed, ForceMode.Impulse); // Apply force
+            }
+        }
+
+        /*if(collision.gameObject.CompareTag("pitch"))
         {
             //When ball colides with pitch set the spin value by what was given.
             switch(balltype)
@@ -115,9 +144,9 @@ private void OnCollisionEnter(Collision collision)
 
             }
 
-        }
+        }*/
 
-        if(collision.gameObject.CompareTag("stump"))
+        if (collision.gameObject.CompareTag("stump"))
         {
             //display respective message and audio for when clean bowled.
             audio_script.instance.play_Wicket_audio();

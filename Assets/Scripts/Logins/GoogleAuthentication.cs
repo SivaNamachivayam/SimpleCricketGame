@@ -13,8 +13,7 @@ public class GoogleAuthentication : MonoBehaviour
     public string imageURL;
     public string userNameStr;
     public Sprite _profilePic;
-    public Image _googleProfile;
-    public Image _guestProfile;
+    public Image _profilePicture;
 
     public TextMeshProUGUI userNameText;
 
@@ -134,13 +133,12 @@ public class GoogleAuthentication : MonoBehaviour
             WWW www = new WWW(imageUrl);
             yield return www;
 
-            _profilePic = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
-            _googleProfile.sprite = _profilePic;
+            _profilePicture.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
            // OnlyData.Instance.GSprite = _profilePic;
             //OnlyData.Instance.googleLoginbool = true;
             loginPanel.SetActive(false);
             menuPanel.SetActive(true);
-            _googleProfile.gameObject.SetActive(true);
+            _profilePicture.gameObject.SetActive(true);
         }
 
     }
@@ -167,18 +165,14 @@ public class GoogleAuthentication : MonoBehaviour
     {
         // Delete all login data
         PlayerPrefs.DeleteKey("IsGoogleLogin");
-        PlayerPrefs.DeleteKey("IsGuestLogin");
         PlayerPrefs.DeleteKey("DisplayName");
         PlayerPrefs.DeleteKey("LoadProfilePic");
-        PlayerPrefs.DeleteKey("guestId");
         PlayerPrefs.Save();
 
         if (userNameText.text != null) userNameText.text = "";
+        if (_profilePicture != null) _profilePicture = null;
         // Sign out from Google
         GoogleSignIn.DefaultInstance.SignOut();
-
-        _guestProfile.gameObject.SetActive(false);
-        _googleProfile.gameObject.SetActive(false);
         // Show login panel
         menuPanel.SetActive(false);
         loginPanel.SetActive(true);
@@ -189,13 +183,14 @@ public class GoogleAuthentication : MonoBehaviour
         string Guestid = GenerateGuestId();
         userNameText.text = Guestid;
 
+        loginPanel.SetActive(false);
+        menuPanel.SetActive(true);
+        _profilePicture.gameObject.SetActive(true);
+        _profilePicture.sprite = _profilePic;
+
         // Save guest login status
         PlayerPrefs.SetInt("IsGuestLogin", 1); // 1 = true
         PlayerPrefs.Save();
-
-        loginPanel.SetActive(false);
-        menuPanel.SetActive(true);
-        _guestProfile.gameObject.SetActive(true);
     }
 
     private string GenerateGuestId()
@@ -237,9 +232,22 @@ public class GoogleAuthentication : MonoBehaviour
 
             loginPanel.SetActive(false);
             menuPanel.SetActive(true);
+            _profilePicture.sprite = _profilePic;
         }
     }
 
+    public void GuestSignOut()
+    {
+        PlayerPrefs.DeleteKey("IsGuestLogin");
+        PlayerPrefs.DeleteKey("guestId");
+        PlayerPrefs.Save();
+
+        if (userNameText.text != null) userNameText.text = "";
+        if (_profilePicture != null) _profilePicture = null;
+
+        menuPanel.SetActive(false);
+        loginPanel.SetActive(true);
+    }
 }
 
 
